@@ -10,16 +10,11 @@ namespace DeliveryDateCdk
         public static void Main(string[] args)
         {
             var app = new App();
-            new DeliveryDateCdkStack(app, "DeliveryDateCdkStack", new DeliveryDateCdkStackProps
+            var deliveryDateCdkStack = new DeliveryDateCdkStack(app, "DeliveryDateCdkStack", new DeliveryDateCdkStackProps
             {
-                AnalyticsReporting = null,
-                Description = null,
-                Env = null,
-                StackName = null,
-                Synthesizer = null,
-                Tags = null,
-                TerminationProtection = null,
-                Bucket = null
+               StackName = "DeliveryDateCdkStack",
+               Description = "Stack for DeliveryDate",
+               
             });
 
             app.Synth();
