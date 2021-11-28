@@ -51,7 +51,8 @@ namespace DeliveryDate.Lambda
                 };
                 deliveryDateResponse.Add(deliveryDate);
             }
-            return deliveryDateResponse.OrderBy(response => !response.IsGreenDelivery).ThenBy(response => response.DeliveryDate);
+            return deliveryDateResponse
+                .OrderBy(response => !response.IsGreenDelivery).ThenBy(response => response.DeliveryDate);
         }
     }
 }

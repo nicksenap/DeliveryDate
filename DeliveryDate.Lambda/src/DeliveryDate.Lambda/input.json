@@ -1,0 +1,26 @@
+{
+  "Products": [
+    {
+      "ProductId": 1,
+      "Name": "Ägg Frigående Inomhus 15-p S 762g",
+      "DeliveryDays": [1, 3, 4, 5],
+      "ProductType": 1,
+      "DaysInAdvance": 1
+    },
+    {
+      "ProductId": 2,
+      "Name": "Grädd Ädelost 36%",
+      "DeliveryDays": [1, 2, 3, 5],
+      "ProductType": 1,
+      "DaysInAdvance": 1
+    },
+    {
+      "ProductId": 3,
+      "Name": "Köttfria Köttbullar Frysta",
+      "DeliveryDays": [3, 4, 5],
+      "ProductType": 2,
+      "DaysInAdvance": 1
+    }
+  ],
+  "PostalNumber": "13760"
+}
