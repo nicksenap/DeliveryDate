@@ -76,6 +76,10 @@ Running the **dotnet cli** to deploy serverless stack, it will deploy API Gatewa
 
 - Install **dotnet CLI**
 
+- Install **dotnet Lambda tools**
+
+  > dotnet tool install -g Amazon.Lambda.Tools
+
 - cd to project `/src/DeliveryDate.SAM`
 
 - Run the following command
