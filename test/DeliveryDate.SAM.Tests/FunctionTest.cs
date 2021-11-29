@@ -17,15 +17,15 @@ namespace DeliveryDate.SAM.Tests
         }
 
         [Fact]
-        public void TestGetMethod()
+        public void TestPostMethod()
         {
             TestLambdaContext context;
             APIGatewayProxyRequest request;
             APIGatewayProxyResponse response;
 
-            var functions = new Functions();
+            var functions = new Functions(new DateTime(2021,11,29));
             var functionInput = JsonConvert.SerializeObject(FunctionInputFixture());
-            const string functionOutput = "[{\"postalCode\":\"13760\",\"deliveryDate\":\"2021-12-08T00:00:00Z\",\"isGreenDelivery\":true},{\"postalCode\":\"13760\",\"deliveryDate\":\"2021-12-06T00:00:00Z\",\"isGreenDelivery\":false},{\"postalCode\":\"13760\",\"deliveryDate\":\"2021-12-10T00:00:00Z\",\"isGreenDelivery\":false},{\"postalCode\":\"13760\",\"deliveryDate\":\"2021-12-13T00:00:00Z\",\"isGreenDelivery\":false}]";
+            const string functionOutput = "[{\"postalCode\":\"13760\",\"deliveryDate\":\"2021-12-08T00:00:00\",\"isGreenDelivery\":true},{\"postalCode\":\"13760\",\"deliveryDate\":\"2021-12-06T00:00:00\",\"isGreenDelivery\":false},{\"postalCode\":\"13760\",\"deliveryDate\":\"2021-12-10T00:00:00\",\"isGreenDelivery\":false},{\"postalCode\":\"13760\",\"deliveryDate\":\"2021-12-13T00:00:00\",\"isGreenDelivery\":false}]";
             request = new APIGatewayProxyRequest
             {
                 Body = functionInput

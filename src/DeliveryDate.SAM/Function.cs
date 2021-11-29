@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.APIGatewayEvents;
 using DeliveryDate.Lambda.Models;
@@ -17,8 +16,14 @@ namespace DeliveryDate.SAM
 {
     public class Functions
     {
+        private DateTime DateTime { get; set; }
         public Functions()
         {
+            DateTime = DateTime.UtcNow.Date;
+        }
+        public Functions(DateTime dateTime)
+        {
+            DateTime = dateTime;
         }
 
         public APIGatewayProxyResponse POST(APIGatewayProxyRequest request, ILambdaContext context)
@@ -39,7 +44,7 @@ namespace DeliveryDate.SAM
 
             bool IsGreenDelivery(DateTime d) => d.DayOfWeek == DayOfWeek.Wednesday;
             var deliveryDateResponses =
-                GetDeliveryDates(functionInput.PostalNumber, functionInput.Products, IsGreenDelivery);
+                GetDeliveryDates(functionInput.PostalNumber, functionInput.Products, IsGreenDelivery, DateTime);
             var deliveryDateResponsesJsoSerializeObject = JsonConvert.SerializeObject(deliveryDateResponses);
 
             return new APIGatewayProxyResponse
@@ -53,7 +58,8 @@ namespace DeliveryDate.SAM
         private static IEnumerable<DeliveryDateResponse> GetDeliveryDates(
             string postalCode,
             IEnumerable<Product> products,
-            Func<DateTime, bool> isGreenDelivery)
+            Func<DateTime, bool> isGreenDelivery,
+            DateTime date)
         {
             var validWeekDays = products.Select(p => p.DeliveryDays)
                 .Aggregate((acc, list) => acc.Intersect(list));
@@ -61,9 +67,9 @@ namespace DeliveryDate.SAM
             var containTemporaryProduct = products.Any(product => product.ProductType == ProductType.Temporary);
             var daysInAdvance = Math.Max(products.Select(product => product.DaysInAdvance).Max(),
                 containExternalProduct ? Constants.EXTERNAL_PRODUCT_DAYS_IN_ADVANCE : 0);
-            var startDate = DateTime.UtcNow.Date.AddDays(daysInAdvance);
-            var nextSunday = DateTime.UtcNow.Date.AddDays(7 - (int)DateTime.UtcNow.Date.DayOfWeek);
-            var endDate = containTemporaryProduct ? nextSunday : DateTime.UtcNow.Date.AddDays(Constants.TWO_WEEKS);
+            var startDate = date.AddDays(daysInAdvance);
+            var nextSunday = date.AddDays(7 - (int)date.DayOfWeek);
+            var endDate = containTemporaryProduct ? nextSunday : date.AddDays(Constants.TWO_WEEKS);
             var deliveryDateResponse = new List<DeliveryDateResponse>();
             for (var dtm = startDate; dtm <= endDate; dtm = dtm.AddDays(1))
             {
