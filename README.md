@@ -1,6 +1,7 @@
 ## DeliveryDate Functon
 
-Serverless function/api on **.NET core** and **AWS serverless computing** Lambda, API Gateway。 Also includes cloudformation, SAM, Swagger, xUnit,
+Serverless function/api on **.NET core** and **AWS serverless computing** Lambda, API Gateway.
+Also includes cloudformation, SAM, xUnit,
 
 ### Try out the function:
 
