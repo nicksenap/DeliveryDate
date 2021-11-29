@@ -27,7 +27,19 @@ namespace DeliveryDate.SAM
         {
             context.Logger.LogLine("Post Request\n");
             var body = request.Body;
+
             var functionInput = JsonConvert.DeserializeObject<FunctionInput>(body);
+
+            if (functionInput.Products == null || functionInput.PostalNumber == null)
+            {
+                return new APIGatewayProxyResponse
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest,
+                    Body = "Invalid function input",
+                    Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
+                };
+            }
+
             bool IsGreenDelivery(DateTime d) => d.DayOfWeek == DayOfWeek.Wednesday;
             var deliveryDateResponses = GetDeliveryDates(functionInput.PostalNumber, functionInput.Products, IsGreenDelivery);
             var deliveryDateResponsesJsoSerializeObject = JsonConvert.SerializeObject(deliveryDateResponses);
@@ -51,7 +63,6 @@ namespace DeliveryDate.SAM
             var containTemporaryProduct = products.Any(product => product.ProductType == ProductType.Temporary);
             var daysInAdvance = Math.Max(products.Select(product => product.DaysInAdvance).Max(), 
                 containExternalProduct ? Constants.EXTERNAL_PRODUCT_DAYS_IN_ADVANCE : 0);
-
             var startDate = DateTime.UtcNow.Date.AddDays(daysInAdvance);
             var nextSunday = DateTime.UtcNow.Date.AddDays(7 - (int) DateTime.UtcNow.Date.DayOfWeek);    
             var endDate = containTemporaryProduct ? nextSunday : DateTime.UtcNow.Date.AddDays(Constants.TWO_WEEKS);
@@ -68,6 +79,7 @@ namespace DeliveryDate.SAM
                 };
                 deliveryDateResponse.Add(deliveryDate);
             }
+            
             return deliveryDateResponse
                 .OrderBy(response => !response.IsGreenDelivery).ThenBy(response => response.DeliveryDate);
         }

@@ -16,7 +16,7 @@
           "AWSLambdaBasicExecutionRole"
         ],
         "Events": {
-          "RootGet": {
+          "RootPost": {
             "Type": "Api",
             "Properties": {
               "Path": "/",
