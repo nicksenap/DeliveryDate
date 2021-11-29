@@ -14,6 +14,7 @@ namespace DeliveryDate.Lambda.Tests
         public void TestLambdaFunction()
         {
             var input = FunctionInputFixture();
+            var jsonInput = JsonConvert.SerializeObject(input);
             const string output =
                 "[{\"PostalCode\":\"13760\",\"DeliveryDate\":\"2021-12-08T00:00:00Z\",\"IsGreenDelivery\":true},{\"PostalCode\":\"13760\",\"DeliveryDate\":\"2021-12-03T00:00:00Z\",\"IsGreenDelivery\":false},{\"PostalCode\":\"13760\",\"DeliveryDate\":\"2021-12-10T00:00:00Z\",\"IsGreenDelivery\":false}]";
             var function = new Function();

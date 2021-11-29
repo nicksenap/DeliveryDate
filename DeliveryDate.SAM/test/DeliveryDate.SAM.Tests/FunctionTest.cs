@@ -1,14 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 using Xunit;
-using Amazon.Lambda.Core;
 using Amazon.Lambda.TestUtilities;
 using Amazon.Lambda.APIGatewayEvents;
-
-using DeliveryDate.SAM;
 
 namespace DeliveryDate.SAM.Tests
 {
@@ -29,7 +21,7 @@ namespace DeliveryDate.SAM.Tests
 
             
             request = new APIGatewayProxyRequest();
-            request.Body = 
+            request.Body = "";
             context = new TestLambdaContext();
             response = functions.Get(request, context);
             Assert.Equal(200, response.StatusCode);

@@ -19,36 +19,25 @@ namespace DeliveryDate.SAM
 {
     public class Functions
     {
-        /// <summary>
-        /// Default constructor that Lambda will invoke.
-        /// </summary>
         public Functions()
         {
         }
-
-
-        /// <summary>
-        /// A Lambda function to respond to HTTP Get methods from API Gateway
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns>The API Gateway response.</returns>
-        public APIGatewayProxyResponse Get(APIGatewayProxyRequest request, ILambdaContext context)
+        
+        public APIGatewayProxyResponse POST(APIGatewayProxyRequest request, ILambdaContext context)
         {
-            context.Logger.LogLine("Get Request\n");
+            context.Logger.LogLine("Post Request\n");
             var body = request.Body;
             var functionInput = JsonConvert.DeserializeObject<FunctionInput>(body);
             bool IsGreenDelivery(DateTime d) => d.DayOfWeek == DayOfWeek.Wednesday;
-            var result = GetDeliveryDates(functionInput.PostalNumber, functionInput.Products, IsGreenDelivery);
-            var jsonResult = JsonConvert.SerializeObject(result);
+            var deliveryDateResponses = GetDeliveryDates(functionInput.PostalNumber, functionInput.Products, IsGreenDelivery);
+            var deliveryDateResponsesJsoSerializeObject = JsonConvert.SerializeObject(deliveryDateResponses);
             
-            var response = new APIGatewayProxyResponse
+            return new APIGatewayProxyResponse
             {
                 StatusCode = (int)HttpStatusCode.OK,
-                Body = jsonResult,
-                Headers = new Dictionary<string, string> { { "Content-Type", "text/plain" } }
+                Body = deliveryDateResponsesJsoSerializeObject,
+                Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
             };
-
-            return response;
         }
         
         private static IEnumerable<DeliveryDateResponse> GetDeliveryDates(

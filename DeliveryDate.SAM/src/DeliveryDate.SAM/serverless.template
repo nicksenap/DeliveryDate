@@ -3,10 +3,10 @@
   "Transform": "AWS::Serverless-2016-10-31",
   "Description": "An AWS Serverless Application.",
   "Resources": {
-    "Get": {
+    "POST": {
       "Type": "AWS::Serverless::Function",
       "Properties": {
-        "Handler": "DeliveryDate.SAM::DeliveryDate.SAM.Functions::Get",
+        "Handler": "DeliveryDate.SAM::DeliveryDate.SAM.Functions::POST",
         "Runtime": "dotnetcore3.1",
         "CodeUri": "",
         "MemorySize": 256,
@@ -20,7 +20,7 @@
             "Type": "Api",
             "Properties": {
               "Path": "/",
-              "Method": "GET"
+              "Method": "POST"
             }
           }
         }
